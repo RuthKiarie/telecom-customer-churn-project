@@ -6,6 +6,8 @@ import pandas as pd
 import joblib
 import mlflow
 import os
+from mangum import Mangum
+
 
 model = None
 feature_columns = None
@@ -76,3 +78,8 @@ def predict_churn(payload: ChurnRequest):
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Prediction failed: {str(e)}")
+
+
+# ASGI handler for AWS Lambda
+
+handler = Mangum(app)
