@@ -1,0 +1,30 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# MLflow Tracking & Local Artifacts
+mlruns/
+*.pkl
+
+# IDE & OS Specific Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Environment Variables & Secrets
+.env
+*.env
+
+# Raw & Unused Datasets
+indian_customers_original.csv
+indian_customers_training.csv
+indian_telecom_customers.csv
