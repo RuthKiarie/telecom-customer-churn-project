@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Production FastAPI Serverless Churn Prediction Pipeline
+
+Resources:
+  ChurnPredictionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/.
+      Handler: main.handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+    Metadata:
+      BuildMethod: python3.11
+      
+Outputs:
+  ChurnApiUrl:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

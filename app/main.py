@@ -1,13 +1,10 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import mlflow.sklearn
 import pandas as pd
 import joblib
-import mlflow
 import os
 from mangum import Mangum
-
 
 model = None
 feature_columns = None
@@ -16,31 +13,47 @@ feature_columns = None
 async def lifespan(app: FastAPI):
     global model, feature_columns
     try:
-        experiment = mlflow.get_experiment_by_name("India_Telecom_Churn_Prediction")
-        if experiment:
-            runs = mlflow.search_runs(experiment_ids=[experiment.experiment_id], order_by=["start_time DESC"])
-            if not runs.empty:
-                latest_run_id = runs.iloc[0]["run_id"]
-                model_uri = f"runs:/{latest_run_id}/churn_model"
-                
-                model = mlflow.sklearn.load_model(model_uri)
-                client = mlflow.tracking.MlflowClient()
-                feature_path = client.download_artifacts(latest_run_id, "churn_model/feature_columns.pkl")
-                feature_columns = joblib.load(feature_path)
-                print("Model and Feature Columns loaded successfully!")
+        # AWS Lambda sets LAMBDA_TASK_ROOT to /var/task
+        # Fall back to base path relative to main.py for local testing
+        task_root = os.environ.get("LAMBDA_TASK_ROOT", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+        # Look in task root first, then fallback to current directory
+        model_path = os.path.join(task_root, "churn_model.pkl")
+        feature_path = os.path.join(task_root, "feature_columns.pkl")
+
+        if not os.path.exists(model_path):
+            model_path = "churn_model.pkl"
+        if not os.path.exists(feature_path):
+            feature_path = "feature_columns.pkl"
+
+        print(f"Attempting to load model from: {os.path.abspath(model_path)}")
+        print(f"Attempting to load features from: {os.path.abspath(feature_path)}")
+
+        if os.path.exists(model_path):
+            model = joblib.load(model_path)
+            print("Model loaded successfully!")
+        else:
+            print(f"Model file NOT found at {model_path}")
+
+        if os.path.exists(feature_path):
+            feature_columns = joblib.load(feature_path)
+            print("Feature columns loaded successfully!")
+        else:
+            print(f"Feature columns file NOT found at {feature_path}")
+
     except Exception as e:
         print(f"Error loading model during startup: {e}")
     
     yield
     
-    # Cleanup on shutdown if needed
     model = None
     feature_columns = None
 
 app = FastAPI(
     title="India Telecom Customer Churn Prediction API",
-    description="REST API serving real-time predictions for customer churn using an MLflow-tracked model.",
+    description="REST API serving real-time predictions for customer churn using a trained model.",
     version="1.0.0",
+    root_path="/default",
     lifespan=lifespan
 )
 
@@ -79,7 +92,4 @@ def predict_churn(payload: ChurnRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Prediction failed: {str(e)}")
 
-
-# ASGI handler for AWS Lambda
-
-handler = Mangum(app)
+handler = Mangum(app, api_gateway_base_path="/default") 
