@@ -1,4 +1,3 @@
-cat << 'EOF' > buildspec.yml
 version: 0.2
 
 phases:
@@ -20,4 +19,3 @@ phases:
       - echo Pushing the Docker image to ECR...
       - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
       - echo Image push completed successfully.
-EOF
