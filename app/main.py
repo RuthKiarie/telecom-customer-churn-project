@@ -56,7 +56,8 @@ app = FastAPI(
     title="India Telecom Customer Churn Prediction API",
     description="REST API serving real-time predictions for customer churn using a trained model.",
     version="2.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
+    root_path="/default"  # This tells FastAPI about the API Gateway stage prefix
 )
 
 @app.get("/")
