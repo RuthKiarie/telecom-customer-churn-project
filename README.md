@@ -40,8 +40,8 @@ The dataset used to train this model is the **Indian Telecom Customer Churn Pred
 
 The system utilizes a scalable serverless and containerized AWS infrastructure. Below is the visual data flow and component layout governing user requests, routing, security, compute, and logging:
 
-```mermaid
-graph TD
+
+![graph TD
     User[Web UI / Users] --> Route53[Amazon Route 53]
     Route53 --> CloudFront[Amazon CloudFront]
     CloudFront --> VPC[Amazon VPC / Application Load Balancer]
@@ -62,7 +62,7 @@ graph TD
         CloudWatch[Amazon CloudWatch] -.-> Lambda
         CodePipeline[AWS CodePipeline] --> Lambda
     end
-
+](assets/servi.JPG)
 
                                                                                                     
 
