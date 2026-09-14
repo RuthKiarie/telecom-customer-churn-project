@@ -30,8 +30,9 @@ async def lifespan(app: FastAPI):
         feature_path = base_dir / "feature_columns.pkl"
 
         if model_path.exists():
-            # Load skops model securely
-            model = sio.load(model_path, trusted=True)
+            # Get untrusted types dynamically and pass them as trusted for our own model file
+            unknown_types = sio.get_untrusted_types(file=model_path)
+            model = sio.load(model_path, trusted=unknown_types)
             print("Skops model loaded successfully!")
         else:
             print(f"CRITICAL: Model file NOT found at {model_path}")
