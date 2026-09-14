@@ -7,7 +7,8 @@ st.set_page_config(
 
 st.title("📊 Telecom Churn Predictor")
 st.write(
-    "Use this dashboard to evaluate customer churn risk in real-time."
+    "Use this interactive dashboard to simulate subscriber profiles and " 
+    "evaluate telecom customer churn risk in real-time powered by a serverless FastAPI backend on AWS."
 )
 
 # Sidebar or input fields for customer features
