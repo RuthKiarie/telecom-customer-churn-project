@@ -84,12 +84,21 @@ def predict_churn(payload: ChurnRequest):
         prediction = model.predict(df_aligned)
         probabilities = model.predict_proba(df_aligned) if hasattr(model, "predict_proba") else None
 
-        churn_result = int(prediction[0])
+        pred_value = prediction[0]
+
+        # Handle whether the model outputs strings ("Yes"/"No") or numbers (1/0)
+        if str(pred_value).lower() in ["yes", "true", "1"]:
+            churn_result = 1
+            churn_status = "Yes"
+        else:
+            churn_result = 0
+            churn_status = "No"
+
         churn_prob = float(probabilities[0][1]) if probabilities is not None else None
 
         return {
             "churn_prediction": churn_result,
-            "churn_status": "Yes" if churn_result == 1 else "No",
+            "churn_status": churn_status,
             "probability_churn": churn_prob
         }
     except Exception as e:
