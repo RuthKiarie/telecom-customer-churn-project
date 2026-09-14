@@ -1,10 +1,14 @@
+from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import pandas as pd
 import joblib
-import os
+import skops.io as sio
 from mangum import Mangum
+import os
+
+os.environ["JOBLIB_TEMP_FOLDER"] = "/tmp"
 
 model = None
 feature_columns = None
@@ -13,33 +17,30 @@ feature_columns = None
 async def lifespan(app: FastAPI):
     global model, feature_columns
     try:
-        # AWS Lambda sets LAMBDA_TASK_ROOT to /var/task
-        # Fall back to base path relative to main.py for local testing
-        task_root = os.environ.get("LAMBDA_TASK_ROOT", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-        # Look in task root first, then fallback to current directory
-        model_path = os.path.join(task_root, "churn_model.pkl")
-        feature_path = os.path.join(task_root, "feature_columns.pkl")
-
-        if not os.path.exists(model_path):
-            model_path = "churn_model.pkl"
-        if not os.path.exists(feature_path):
-            feature_path = "feature_columns.pkl"
-
-        print(f"Attempting to load model from: {os.path.abspath(model_path)}")
-        print(f"Attempting to load features from: {os.path.abspath(feature_path)}")
-
-        if os.path.exists(model_path):
-            model = joblib.load(model_path)
-            print("Model loaded successfully!")
+        base_dir = Path(__file__).resolve().parent
+        
+        # DEBUG: Print everything currently sitting in the app folder inside the container
+        print(f"DEBUG: Contents of {base_dir}:")
+        if base_dir.exists():
+            print(os.listdir(base_dir))
         else:
-            print(f"Model file NOT found at {model_path}")
+            print("CRITICAL: base_dir itself does not exist!")
 
-        if os.path.exists(feature_path):
+        model_path = base_dir / "churn_model.skops"
+        feature_path = base_dir / "feature_columns.pkl"
+
+        if model_path.exists():
+            # Load skops model securely
+            model = sio.load(model_path, trusted=True)
+            print("Skops model loaded successfully!")
+        else:
+            print(f"CRITICAL: Model file NOT found at {model_path}")
+
+        if feature_path.exists():
             feature_columns = joblib.load(feature_path)
             print("Feature columns loaded successfully!")
         else:
-            print(f"Feature columns file NOT found at {feature_path}")
+            print(f"CRITICAL: Feature columns file NOT found at {feature_path}")
 
     except Exception as e:
         print(f"Error loading model during startup: {e}")
@@ -49,11 +50,11 @@ async def lifespan(app: FastAPI):
     model = None
     feature_columns = None
 
+
 app = FastAPI(
     title="India Telecom Customer Churn Prediction API",
     description="REST API serving real-time predictions for customer churn using a trained model.",
-    version="1.0.0",
-    root_path="/default",
+    version="2.0.0",
     lifespan=lifespan
 )
 
@@ -92,4 +93,4 @@ def predict_churn(payload: ChurnRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Prediction failed: {str(e)}")
 
-handler = Mangum(app, api_gateway_base_path="/default") 
+handler = Mangum(app)

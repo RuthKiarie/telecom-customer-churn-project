@@ -12,7 +12,7 @@ __pycache__/
 
 # MLflow Tracking & Local Artifacts
 mlruns/
-*.pkl
+# *.pkl
 
 # IDE & OS Specific Files
 .vscode/
