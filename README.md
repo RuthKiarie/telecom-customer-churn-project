@@ -1,11 +1,11 @@
 # Telecom Customer Churn Prediction & Cloud MLOps Platform
 
-## 1. Overview & Hook
+## 1. Overview
 Telecom operators lose millions annually to customer attrition. To tackle this high-stakes business problem, I built a production-grade, end-to-end MLOps solution: a machine learning classifier trained to predict subscriber churn, deployed via a serverless FastAPI backend on AWS Lambda and fronted by an interactive, public-facing Streamlit portfolio application. 
 
 ---
 
-## 2. Professional Role Alignment (Why This Project)
+## 2. Why This Project
 This project mirrors the core lifecycle responsibilities of a Machine Learning / MLOps Engineer:
 - **Data Engineering & EDA:** Handling data cleaning, handling categorical variables and building feature alignment maps.
 - **Model Experimentation & Training:** Training a binary classification model on telecom metrics (tenure, charges, contract types) to output reliable risk probabilities.
@@ -29,7 +29,14 @@ The dataset used to train this model is the **Indian Telecom Customer Churn Pred
 
 ---
 
-## 5. Architecture & Pipeline
+## 5. Live Links & Portfolio Access
+- **Interactive Web App Demo:** https://telecom-customer-churn-project-crcysyunzqsj5wdqhcmqtk.streamlit.app/ 
+- **API Documentation (Swagger UI):** https://uvnhsaxyn9.execute-api.us-east-1.amazonaws.com/default/docs
+- **GitHub Repository Source Code:** https://github.com/RuthKiarie/telecom-customer-churn-project
+
+---
+
+## 6. Architecture & Pipeline
 The system is built on a serverless, containerized AWS architecture, integrated with automated CI/CD pipelines, an **HTTP API** (instead of REST API) and interactive API documentation.
 Data flows seamlessly from raw input features through backend inference to user visualization:
 
@@ -65,7 +72,3 @@ Kaggle Training Data
 
                                                                                                     
 
-## 7. Live Links & Portfolio Access
-- **Interactive Web App Demo:** https://telecom-customer-churn-project-crcysyunzqsj5wdqhcmqtk.streamlit.app/ 
-- **API Documentation (Swagger UI):** https://uvnhsaxyn9.execute-api.us-east-1.amazonaws.com/default/docs
-- **GitHub Repository Source Code:** https://github.com/RuthKiarie/telecom-customer-churn-project
