@@ -5,10 +5,9 @@ st.set_page_config(
     page_title="Telecom Churn Dashboard", page_icon="📊", layout="centered"
 )
 
-st.title("📊 India Telecom Churn Predictor")
+st.title("📊 Telecom Churn Predictor")
 st.write(
-    "Use this dashboard to evaluate customer churn risk in real-time via your"
-    " AWS Lambda API."
+    "Use this dashboard to evaluate customer churn risk in real-time."
 )
 
 # Sidebar or input fields for customer features
