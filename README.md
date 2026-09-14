@@ -37,37 +37,31 @@ The dataset used to train this model is the **Indian Telecom Customer Churn Pred
 ---
 
 ## 6. Architecture & Pipeline
-The system is built on a serverless, containerized AWS architecture, integrated with automated CI/CD pipelines, an **HTTP API** (instead of REST API) and interactive API documentation.
-Data flows seamlessly from raw input features through backend inference to user visualization:
 
-```text
-Kaggle Training Data 
-    → Model Training & Serialization (Scikit-learn)
-    → FastAPI Backend Microservice (`app/main.py`)
-    → AWS Lambda / API Gateway Cloud Deployment
-    → Streamlit Frontend UI (`frontend/dashboard.py`)
-    → Live Public Portfolio Showcase
+The system utilizes a scalable serverless and containerized AWS infrastructure. Below is the visual data flow and component layout governing user requests, routing, security, compute, and logging:
 
+```mermaid
+graph TD
+    User[Web UI / Users] --> Route53[Amazon Route 53]
+    Route53 --> CloudFront[Amazon CloudFront]
+    CloudFront --> VPC[Amazon VPC / Application Load Balancer]
+    
+    subgraph Compute & Backend
+        VPC --> Lambda[AWS Lambda (FastAPI HTTP API)]
+        VPC --> ECS[Amazon Elastic Container Service]
+    end
 
+    subgraph Storage & Database
+        Lambda --> S3[Amazon S3 / Artifacts]
+        ECS --> DynamoDB[Amazon DynamoDB]
+        ECS --> Elasticsearch[Amazon Elasticsearch Service]
+    end
 
-```text
-[ Developer / Git Commit ]
-       │
-       ▼
-[ AWS CodeBuild ] ──(Builds Docker Image & Pushes)──> [ Amazon S3 / ECR Storage ]
-       │                                                      │
-       ▼                                                      ▼
-[ GitHub Actions CI/CD ]                            [ AWS Lambda (FastAPI) ]
-                                                              │
-        ┌─────────────────────────────────────────────────────┼─────────────────────────────────────────────────────┐
-        │                                                     │                                                     │
-        ▼                                                     ▼                                                     ▼
-[ IAM Roles & Policies ]                         [ Amazon CloudWatch ]                               [ Amazon API Gateway ]
-(Least-Privilege Security)                       (Logging, Monitoring & Traces)                      (HTTP API Routing)
-                                                                                                                    │
-                                                                                                                    ├─► [ Swagger UI /docs ]
-                                                                                                                    └─► [ Streamlit Frontend ]
-
+    subgraph Security & Operations
+        Cognito[Amazon Cognito] --> Lambda
+        CloudWatch[Amazon CloudWatch] -.-> Lambda
+        CodePipeline[AWS CodePipeline] --> Lambda
+    end
 
 
                                                                                                     
