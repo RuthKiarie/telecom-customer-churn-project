@@ -16,9 +16,12 @@ This project mirrors the core lifecycle responsibilities of a Machine Learning /
 ---
 
 ## 3. Tech Stack
-- **Languages & Core Libraries:** Python, Pandas, Scikit-learn, FastAPI, Mangum
-- **Cloud & DevOps:** AWS Lambda, Amazon S3, Amazon API Gateway, Amazon ECR, AWS CodeBuild, Amazon CloudWatch, Docker, GitHub Actions, Swagger UI
-- **Frontend & UI:** Streamlit, Requests, Streamlit Community Cloud
+- **Languages & Core Libraries:** 
+Python | Pandas | Scikit-learn | FastAPI | Mangum
+- **Cloud & DevOps:** 
+AWS Lambda | Amazon S3 | Amazon API Gateway | Amazon ECR | AWS CodeBuild | Amazon CloudWatch | Docker | GitHub Actions | Swagger UI
+- **Frontend & UI:** 
+Streamlit | Requests | Streamlit Community Cloud
 
 ---
 
@@ -29,10 +32,9 @@ The dataset used to train this model is the **Indian Telecom Customer Churn Pred
 
 ---
 
-## 5. Live Links & Portfolio Access
+## 5. Live Web App Link
 - **Interactive Web App Demo:** https://telecom-customer-churn-project-crcysyunzqsj5wdqhcmqtk.streamlit.app/ 
-- **API Documentation (Swagger UI):** https://uvnhsaxyn9.execute-api.us-east-1.amazonaws.com/default/docs
-- **GitHub Repository Source Code:** https://github.com/RuthKiarie/telecom-customer-churn-project
+
 
 ---
 
