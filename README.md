@@ -42,22 +42,5 @@ The dataset used to train this model is the **Indian Telecom Customer Churn Pred
 
 The system is built on a serverless, containerized AWS architecture, integrated with automated CI/CD pipelines, an **HTTP API** (instead of REST API), and interactive API documentation:
 
-![AWS Architecture Diagram](assets/churn_architecture.JPG)
+![AWS Architecture Diagram](assets/churn architecture.JPG)
 
-```text
-[ Developer / Git Commit ]
-       │
-       ▼
-[ AWS CodeBuild ] ──(Builds Docker Image & Pushes)──> [ Amazon S3 / ECR Storage ]
-       │                                                      │
-       ▼                                                      ▼
-[ GitHub Actions CI/CD ]                            [ AWS Lambda (FastAPI) ]
-                                                              │
-        ┌─────────────────────────────────────────────────────┼─────────────────────────────────────────────────────┐
-        │                                                     │                                                     │
-        ▼                                                     ▼                                                     ▼
-[ IAM Roles & Policies ]                         [ Amazon CloudWatch ]                               [ Amazon API Gateway ]
-(Least-Privilege Security)                       (Logging, Monitoring & Traces)                      (HTTP API Routing)
-                                                                                                                    │
-                                                                                                                    ├─► [ Swagger UI /docs ]
-                                                                                                                    └─► [ Streamlit Frontend ]
