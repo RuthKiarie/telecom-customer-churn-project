@@ -42,5 +42,4 @@ The dataset used to train this model is the **Indian Telecom Customer Churn Pred
 
 The system is built on a serverless, containerized AWS architecture, integrated with automated CI/CD pipelines, an **HTTP API** (instead of REST API), and interactive API documentation:
 
-![AWS Architecture Diagram](assets/churn architecture.JPG)
-
+![AWS Architecture Diagram](assets/churn_architecture.JPG)
