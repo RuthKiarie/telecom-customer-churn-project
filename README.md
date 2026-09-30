@@ -1,5 +1,5 @@
 # Telecom Customer Churn Prediction & Cloud MLOps Platform
-Live Web App Link - **Interactive Web App Demo:** https://telecom-customer-churn-project-crcysyunzqsj5wdqhcmqtk.streamlit.app/ 
+Live Web App Link - **Interactive Web App Demo:** https://telecom-customer-churn-project.streamlit.app/
 
 ## 1. Overview
 Telecom operators lose millions annually to customer attrition. To tackle this high-stakes business problem, I built a production-grade, end-to-end MLOps solution: a machine learning classifier trained to predict subscriber churn, deployed via a serverless FastAPI backend on AWS Lambda and fronted by an interactive, public-facing Streamlit portfolio application. 
